@@ -12,14 +12,18 @@ spec:
   containers:
   - name: kaniko
     image: gcr.io/kaniko-project/executor:latest
-    command: ["/busybox/sh"]
+    command: ["/busybox/sh","-c","while true; do sleep 3600; done"]
     tty: true
     volumeMounts:
     - name: docker-config
       mountPath: /kaniko/.docker/
   - name: kubectl
     image: bitnami/kubectl:1.29
-    command: ["/bin/sh", "-c", "sleep 99d"]
+    command: ["/bin/sh","-c","while true; do sleep 3600; done"]
+    tty: true
+  - name: git
+    image: alpine/git:2.45.2
+    command: ["/bin/sh","-c","while true; do sleep 3600; done"]
     tty: true
   volumes:
   - name: docker-config
@@ -39,20 +43,16 @@ spec:
     PROJECT    = "library"
     IMAGE_NAME = "pulse_api"
     NAMESPACE  = "pulse"
-    // If your Harbor uses a self-signed cert, keep these; otherwise drop them.
-    KANIKO_TLS = "--insecure --skip-tls-verify"
-    BRANCH_NAME = "master"
-  }
-
-  triggers {
-    // For Multibranch you'll typically rely on webhooks; keep empty poll to disable cron.
-    pollSCM('')
+    KANIKO_TLS = "--insecure --skip-tls-verify --skip-tls-verify-registry=harbor.internal"
   }
 
   stages {
     stage('Checkout') {
       steps {
-        checkout scm
+        container('git') {
+          checkout scm
+          sh 'git --version && echo WORKSPACE=$WORKSPACE && test -f Dockerfile && ls -la'  // quick sanity
+        }
       }
     }
 
@@ -80,16 +80,14 @@ spec:
         SHORT_SHA = "${env.GIT_COMMIT.take(7)}"
         TAG       = "${env.BRANCH_NAME}-${SHORT_SHA}"
         FULL_IMG  = "${REGISTRY}/${PROJECT}/${IMAGE_NAME}:${TAG}"
-        DEPLOY    = "${IMAGE_NAME}" // assumes Deployment name == image/app name
+        DEPLOY    = "${IMAGE_NAME}"
       }
       steps {
         container('kubectl') {
           sh """
             set -euo pipefail
-            # Update the workload's image to the newly built tag
             kubectl -n ${NAMESPACE} set image deploy/${DEPLOY} ${IMAGE_NAME}=${FULL_IMG} --record || true
             kubectl -n ${NAMESPACE} rollout status deploy/${DEPLOY} --timeout=5m
-            # Optional: show the image now running
             kubectl -n ${NAMESPACE} get deploy ${DEPLOY} -o wide
           """
         }
@@ -98,6 +96,9 @@ spec:
   }
 
   post {
+    always {
+      echo "BRANCH=${env.BRANCH_NAME} SHA=${env.GIT_COMMIT}"
+    }
     failure {
       echo "Build failed on ${env.BRANCH_NAME}@${env.GIT_COMMIT}"
     }
