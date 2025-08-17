@@ -1,35 +1,45 @@
 pipeline {
   agent {
     kubernetes {
-      yaml """
-apiVersion: v1
-kind: Pod
-metadata:
-  labels:
-    app: jenkins-kaniko
-spec:
-  serviceAccountName: jenkins
-  containers:
-  - name: kaniko
-    image: gcr.io/kaniko-project/executor:v1.23.2-debug
-    command: ["/busybox/sh","-c","while true; do sleep 3600; done"]
-    tty: true
-    volumeMounts:
-    - name: docker-config
-      mountPath: /kaniko/.docker/
-  - name: kubectl
-    image: bitnami/kubectl:1.29
-    command: ["/bin/sh","-c","while true; do sleep 3600; done"]
-    tty: true
-  - name: git
-    image: alpine/git:2.45.2
-    command: ["/bin/sh","-c","while true; do sleep 3600; done"]
-    tty: true
-  volumes:
-  - name: docker-config
-    secret:
-      secretName: harbor-docker-config
-"""
+      yaml '''
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        labels:
+          app: jenkins-kaniko
+      spec:
+        serviceAccountName: jenkins
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+          fsGroup: 1000
+        containers:
+        - name: kaniko
+          image: gcr.io/kaniko-project/executor:v1.23.2-debug
+          command: ["/busybox/sh","-c","while true; do sleep 3600; done"]
+          tty: true
+          securityContext:
+            allowPrivilegeEscalation: false
+          volumeMounts:
+          - name: docker-config
+            mountPath: /kaniko/.docker/
+        - name: kubectl
+          image: bitnami/kubectl:1.29
+          command: ["/bin/sh","-c","while true; do sleep 3600; done"]
+          tty: true
+          securityContext:
+            allowPrivilegeEscalation: false
+        - name: git
+          image: alpine/git:2.45.2
+          command: ["/bin/sh","-c","while true; do sleep 3600; done"]
+          tty: true
+          securityContext:
+            allowPrivilegeEscalation: false
+        volumes:
+        - name: docker-config
+          secret:
+            secretName: harbor-docker-config
+    '''
     }
   }
 
@@ -39,11 +49,11 @@ spec:
   }
 
   environment {
-    REGISTRY   = "harbor.internal"
-    PROJECT    = "library"
-    IMAGE_NAME = "pulse_api"
-    NAMESPACE  = "pulse"
-    KANIKO_TLS = "--insecure --skip-tls-verify --skip-tls-verify-registry=harbor.internal"
+    REGISTRY   = 'harbor.internal'
+    PROJECT    = 'library'
+    IMAGE_NAME = 'pulse_api'
+    NAMESPACE  = 'pulse'
+    KANIKO_TLS = '--insecure --skip-tls-verify --skip-tls-verify-registry=harbor.internal'
   }
 
   stages {
