@@ -10,15 +10,16 @@ pipeline {
       spec:
         serviceAccountName: jenkins
         securityContext:
-          fsGroup: 1000                     # keep shared write access
-          fsGroupChangePolicy: OnRootMismatch  # optional, faster on some volumes
+          runAsUser: 1000
+          runAsGroup: 1000
+          fsGroup: 1000
         containers:
         - name: kaniko
           image: gcr.io/kaniko-project/executor:v1.23.2-debug
           command: ["/busybox/sh","-c","while true; do sleep 3600; done"]
           tty: true
+          runAsUser: 0
           securityContext:
-            runAsUser: 0                    # <-- run kaniko as root
             allowPrivilegeEscalation: false
           volumeMounts:
           - name: docker-config
@@ -28,18 +29,18 @@ pipeline {
           command: ["/bin/sh","-c","while true; do sleep 3600; done"]
           tty: true
           securityContext:
-            runAsUser: 1000                 # non-root
-            runAsGroup: 1000
             allowPrivilegeEscalation: false
         - name: git
           image: alpine/git:2.45.2
           command: ["/bin/sh","-c","while true; do sleep 3600; done"]
           tty: true
           securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
             allowPrivilegeEscalation: false
-          '''
+        volumes:
+        - name: docker-config
+          secret:
+            secretName: harbor-docker-config
+    '''
     }
   }
 
