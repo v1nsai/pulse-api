@@ -98,12 +98,33 @@ pipeline {
       }
       steps {
         container('kubectl') {
-          sh """
+          sh '''
             set -eu pipefail
-            kubectl -n ${NAMESPACE} set image deploy/${DEPLOY} ${IMAGE_NAME}=${FULL_IMG} --record || true
+            cat <<EOF | kubectl apply -f -
+            apiVersion: apps/v1
+            kind: Deployment
+            metadata:
+              name: ${DEPLOY}
+              namespace: ${NAMESPACE}
+            spec:
+              replicas: 2
+              selector:
+                matchLabels:
+                  app: ${DEPLOY}
+              template:
+                metadata:
+                  labels:
+                    app: ${DEPLOY}
+                spec:
+                  containers:
+                  - name: ${DEPLOY}
+                    image: ${FULL_IMG}
+                    ports:
+                    - containerPort: 8080
+            EOF
             kubectl -n ${NAMESPACE} rollout status deploy/${DEPLOY} --timeout=5m
             kubectl -n ${NAMESPACE} get deploy ${DEPLOY} -o wide
-          """
+          '''
         }
       }
     }
