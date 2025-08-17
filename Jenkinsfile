@@ -11,7 +11,7 @@ spec:
   serviceAccountName: jenkins
   containers:
   - name: kaniko
-    image: gcr.io/kaniko-project/executor:v1.24.0
+    image: gcr.io/kaniko-project/executor:v1.23.2
     command: ["/busybox/sh","-c","while true; do sleep 3600; done"]
     tty: true
     volumeMounts:
