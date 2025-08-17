@@ -99,7 +99,7 @@ pipeline {
       steps {
         container('kubectl') {
           sh """
-            set -euo pipefail
+            set -eu pipefail
             kubectl -n ${NAMESPACE} set image deploy/${DEPLOY} ${IMAGE_NAME}=${FULL_IMG} --record || true
             kubectl -n ${NAMESPACE} rollout status deploy/${DEPLOY} --timeout=5m
             kubectl -n ${NAMESPACE} get deploy ${DEPLOY} -o wide
