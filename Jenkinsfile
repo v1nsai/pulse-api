@@ -10,7 +10,6 @@ pipeline {
       spec:
         serviceAccountName: jenkins
         securityContext:
-          runAsGroup: 1000
           fsGroup: 1000
         containers:
         - name: kaniko
@@ -28,6 +27,7 @@ pipeline {
           command: ["/bin/sh","-c","while true; do sleep 3600; done"]
           tty: true
           runAsUser: 1000
+          runAsGroup: 1000
           securityContext:
             allowPrivilegeEscalation: false
         - name: git
@@ -35,6 +35,7 @@ pipeline {
           command: ["/bin/sh","-c","while true; do sleep 3600; done"]
           tty: true
           runAsUser: 1000
+          runAsGroup: 1000
           securityContext:
             allowPrivilegeEscalation: false
         volumes:
