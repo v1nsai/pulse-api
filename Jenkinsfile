@@ -11,14 +11,15 @@ pipeline {
         serviceAccountName: jenkins
         securityContext:
           fsGroup: 1000
+          fsGroupChangePolicy: OnRootMismatch
         containers:
         - name: kaniko
           image: gcr.io/kaniko-project/executor:v1.23.2-debug
           command: ["/busybox/sh","-c","while true; do sleep 3600; done"]
           tty: true
-          runAsUser: 0
           securityContext:
-            allowPrivilegeEscalation: false
+            runAsUser: 0
+            allowPrivilegeEscalation: true
           volumeMounts:
           - name: docker-config
             mountPath: /kaniko/.docker/
@@ -26,22 +27,23 @@ pipeline {
           image: bitnami/kubectl:1.29
           command: ["/bin/sh","-c","while true; do sleep 3600; done"]
           tty: true
-          runAsUser: 0
           securityContext:
-            allowPrivilegeEscalation: false
+            runAsUser: 0
+            runAsGroup: 1000
+            allowPrivilegeEscalation: true
         - name: git
           image: alpine/git:2.45.2
           command: ["/bin/sh","-c","while true; do sleep 3600; done"]
           tty: true
-          runAsUser: 1000
-          runAsGroup: 1000
           securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
             allowPrivilegeEscalation: false
         volumes:
         - name: docker-config
           secret:
             secretName: harbor-docker-config
-    '''
+          '''
     }
   }
 
