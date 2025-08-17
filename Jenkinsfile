@@ -10,7 +10,6 @@ pipeline {
       spec:
         serviceAccountName: jenkins
         securityContext:
-          runAsUser: 1000
           runAsGroup: 1000
           fsGroup: 1000
         containers:
@@ -28,12 +27,14 @@ pipeline {
           image: bitnami/kubectl:1.29
           command: ["/bin/sh","-c","while true; do sleep 3600; done"]
           tty: true
+          runAsUser: 1000
           securityContext:
             allowPrivilegeEscalation: false
         - name: git
           image: alpine/git:2.45.2
           command: ["/bin/sh","-c","while true; do sleep 3600; done"]
           tty: true
+          runAsUser: 1000
           securityContext:
             allowPrivilegeEscalation: false
         volumes:
