@@ -1,21 +1,50 @@
-# Use the official Python image as a parent image
-FROM python:3.10-slim
+# ---------- Stage 1: build wheels ----------
+FROM python:3.10-slim AS builder
 
-# Set the working directory in the container
+ENV DEBIAN_FRONTEND=noninteractive \
+    PIP_NO_CACHE_DIR=1
+
+# install deps
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      build-essential \
+      gcc \
+      pkg-config \
+      default-libmysqlclient-dev \
+      libmariadb-dev-compat libmariadb-dev \
+      git \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
-# Copy the Pipfile and Pipfile.lock into the container
-COPY Pipfile Pipfile.lock /app/
+COPY Pipfile Pipfile.lock ./
 
-# Install pipenv and project dependencies
-RUN pip install --no-cache-dir pipenv \
-    && pipenv install --system --deploy
+# Export requirements for pip wheel to build
+RUN pip install --no-cache-dir pipenv==2023.12.1 && \
+    pipenv requirements > requirements.txt
 
-# Copy the rest of the application code into the container
-COPY . /app/
+RUN pip wheel --wheel-dir /wheels -r requirements.txt
 
-# Expose the port the app runs on
+# ---------- Stage 2: runtime ----------
+FROM python:3.10-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      libmariadb3 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# deps compiled in build stage
+COPY --from=builder /wheels /wheels
+COPY --from=builder /app/requirements.txt /tmp/requirements.txt
+
+# Install with prebuilt libs
+RUN pip install --no-index --find-links=/wheels -r /tmp/requirements.txt \
+    && rm -rf /wheels /tmp/requirements.txt
+
 EXPOSE 8000
-
-# Set the default command to run the application
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
