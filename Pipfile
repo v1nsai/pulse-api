@@ -7,6 +7,8 @@ name = "pypi"
 Django = "*"
 djangorestframework = "*"
 mysqlclient = "*"
+boto3 = "*"
+django-storages = "*"
 
 [dev-packages]
 
