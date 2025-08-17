@@ -1,4 +1,4 @@
-# ---------- Stage 1: build wheels ----------
+# build
 FROM python:3.10-slim AS builder
 
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -24,7 +24,7 @@ RUN pip install --no-cache-dir pipenv==2023.12.1 && \
 
 RUN pip wheel --wheel-dir /wheels -r requirements.txt
 
-# ---------- Stage 2: runtime ----------
+# run
 FROM python:3.10-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
