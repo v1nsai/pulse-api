@@ -55,7 +55,7 @@ pipeline {
   environment {
     REGISTRY   = 'harbor.internal'
     PROJECT    = 'library'
-    IMAGE_NAME = 'pulse_api'
+    IMAGE_NAME = 'pulse-api'
     NAMESPACE  = 'pulse'
     KANIKO_TLS = '--insecure --skip-tls-verify --skip-tls-verify-registry=harbor.internal'
   }
