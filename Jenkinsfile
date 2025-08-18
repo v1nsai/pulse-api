@@ -89,6 +89,14 @@ pipeline {
       }
     }
 
+    stage('Apply Latest Service Account') {
+      steps {
+        container('kubectl') {
+          sh 'kubectl apply -f ./kubernetes/serviceaccount.yaml'
+        }
+      }
+    }
+
     stage('Deploy to K8s') {
       environment {
         SHORT_SHA = "${env.GIT_COMMIT.take(7)}"
