@@ -13,6 +13,8 @@ spec:
       labels:
         app: pulse-api
     spec:
+      imagePullSecrets:
+        - name: harbor-registry-secret
       containers:
       - name: pulse-api
         image: REPLACE_IMAGE
