@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       default-libmysqlclient-dev \
       libmariadb-dev-compat libmariadb-dev \
       git \
+      default-mysql-client \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -23,4 +24,5 @@ RUN python -m pip install pipenv && \
     pipenv install --deploy --ignore-pipfile
 
 EXPOSE 8000
-CMD ["pipenv", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+CMD ["/app/entrypoint.sh"]
