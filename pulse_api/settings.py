@@ -28,9 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -38,6 +36,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "pulse_api.comment.apps.CommentConfig",
+    "pulse_api.post.apps.PostConfig",
+    "pulse_api.tag.apps.TagConfig",
+    "pulse_api.user.apps.UserConfig",
 ]
 
 MIDDLEWARE = [
