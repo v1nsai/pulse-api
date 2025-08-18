@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pulse_api
+  name: pulse-api
   namespace: pulse
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: pulse_api
+      app: pulse-api
   template:
     metadata:
       labels:
-        app: pulse_api
+        app: pulse-api
     spec:
       containers:
-      - name: pulse_api
+      - name: pulse-api
         image: REPLACE_IMAGE
         ports:
         - containerPort: 8080
