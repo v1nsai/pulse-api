@@ -6,7 +6,7 @@ metadata:
     kompose.version: 1.36.0 (HEAD)
   labels:
     io.kompose.service: pulse-api
-  name: pulse_api
+  name: pulse-api
 spec:
   ports:
     - name: "8000"
