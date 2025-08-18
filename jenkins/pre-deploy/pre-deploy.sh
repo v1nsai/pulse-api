@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -e
-source kubernetes/.env
+source jenkins/.env
 
 if [[ -z "${HARBOR_SERVER}" || -z "${HARBOR_USERNAME}" || -z "${HARBOR_PASSWORD}" || -z "${HARBOR_EMAIL}" ]]; then
   echo "Error: One or more environment variables are not set."
@@ -9,8 +9,8 @@ if [[ -z "${HARBOR_SERVER}" || -z "${HARBOR_USERNAME}" || -z "${HARBOR_PASSWORD}
 fi
 
 # Create namespace and service account for jenkins to use
-kubectl apply -f ./kubernetes/namespace.yaml 
-kubectl apply -f ./kubernetes/serviceaccount.yaml
+kubectl apply -f ./jenkins/pre-deploy/namespace.yaml 
+kubectl apply -f ./jenkins/pre-deploy/serviceaccount.yaml
 
 # Harbor registry URL and secret
 kubectl delete secret harbor-registry-secret --namespace pulse || true
@@ -22,6 +22,6 @@ kubectl create secret docker-registry harbor-registry-secret \
   --namespace pulse
 
 # add harbor to talos cluster
-source kubernetes/.env
-envsubst < ./kubernetes/registry_patch.template.yaml > /tmp/registry_patch.yaml
+source jenkins/.env
+envsubst < ./jenkins/pre-deploy/registry_patch.template.yaml > /tmp/registry_patch.yaml
 talosctlwrapper all patch machineconfig --patch @/tmp/registry_patch.yaml
