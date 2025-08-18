@@ -20,3 +20,15 @@ spec:
         image: REPLACE_IMAGE
         ports:
         - containerPort: 8080
+        env:
+          - name: DB_USER
+            value: root
+          - name: DB_PASS
+            valueFrom:
+              secretKeyRef:
+                name: mysql-root-password
+                key: password
+          - name: DB_HOST
+            value: mysql.pulse.svc.cluster.local
+          - name: DB_PORT
+            value: "3306"
