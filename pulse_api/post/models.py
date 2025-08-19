@@ -31,7 +31,7 @@ class PostImage(models.Model):
         db_table = 'post_image'
 
     def save(self, *args, **kwargs):
-        # Enforce a maximum of 20 images per post
-        if self.post.images.count() >= 20:
-            raise ValueError("A post cannot have more than 20 images.")
+        # up to 10 images per post
+        if self.post.images.count() >= 10:
+            raise ValueError("A post cannot have more than 10 images.")
         super().save(using='s3', *args, **kwargs)

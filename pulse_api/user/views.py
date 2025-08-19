@@ -1,7 +1,7 @@
 import json
 from django.shortcuts import render
-from django.http import JsonResponse, HttpResponseBadRequest
-from pulse_api.user.models import User
+from django.http import JsonResponse
+from pulse_api.user.models import CustomUser as User
 
 def get_user_by_id(request, user_id):
     """
