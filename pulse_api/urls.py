@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.urls import path
+from django.contrib.auth.views import LoginView, LogoutView
 
 from pulse_api.user import views as user_views
 from pulse_api.post import views as post_views
@@ -10,9 +11,14 @@ urlpatterns = [
     # admin site currently disabled
     # path("admin/", admin.site.urls),
 
+    # Login/logout
+    path("accounts/login/", LoginView.as_view()),
+    path("accounts/logout/", LogoutView.as_view()),
+
+
     # User views
-    path('users/<int:user_id>/', user_views.get_user_by_id, name='get_user_by_id'),
-    path('users/', user_views.create_user, name='create_user'),
+    path("users/<int:user_id>/", user_views.get_user_by_id, name="get_user_by_id"),
+    path("users/", user_views.create_user, name="create_user"),
     path('users/<int:user_id>/update/', user_views.update_user, name='update_user'),
     path('users/<int:user_id>/delete/', user_views.delete_user, name='delete_user'),
 
