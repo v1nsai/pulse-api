@@ -22,3 +22,16 @@ class PostHasTag(models.Model):
 
     class Meta:
         db_table = 'post_has_tag'
+
+class PostImage(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to='post_images/')
+
+    class Meta:
+        db_table = 'post_image'
+
+    def save(self, *args, **kwargs):
+        # Enforce a maximum of 20 images per post
+        if self.post.images.count() >= 20:
+            raise ValueError("A post cannot have more than 20 images.")
+        super().save(using='s3', *args, **kwargs)

@@ -84,12 +84,12 @@ DATABASES = {
         "HOST": os.getenv("DB_HOST", "localhost"),
         "PORT": os.getenv("DB_PORT", "3306"),
     },
-    "minio": {
-        "ENGINE": "django.db.backends.s3", # TODO: add minio access details
-        "ACCESS_KEY": os.getenv("MINIO_ACCESS_KEY"),
-        "SECRET_KEY": os.getenv("MINIO_SECRET_KEY"),
-        "BUCKET_NAME": os.getenv("MINIO_BUCKET_NAME"),
-        "ENDPOINT_URL": os.getenv("MINIO_ENDPOINT_URL"),
+    "s3": {
+        "ENGINE": "django.db.backends.s3", # TODO: add s3 or minio access details
+        "AWS_ACCESS_KEY_ID": os.getenv("AWS_ACCESS_KEY_ID"),
+        "AWS_SECRET_ACCESS_KEY": os.getenv("AWS_SECRET_ACCESS_KEY"),
+        "AWS_STORAGE_BUCKET_NAME": os.getenv("AWS_STORAGE_BUCKET_NAME"),
+        "AWS_S3_ENDPOINT_URL": os.getenv("AWS_S3_ENDPOINT_URL"),
     }
 }
 
