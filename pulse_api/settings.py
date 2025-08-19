@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 INSTALLED_APPS = [
-    "django.contrib.admin",
+    # "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -83,6 +83,13 @@ DATABASES = {
         "PASSWORD": os.getenv("DB_PASS", ""),
         "HOST": os.getenv("DB_HOST", "localhost"),
         "PORT": os.getenv("DB_PORT", "3306"),
+    },
+    "minio": {
+        "ENGINE": "django.db.backends.s3", # TODO: add minio access details
+        "ACCESS_KEY": os.getenv("MINIO_ACCESS_KEY"),
+        "SECRET_KEY": os.getenv("MINIO_SECRET_KEY"),
+        "BUCKET_NAME": os.getenv("MINIO_BUCKET_NAME"),
+        "ENDPOINT_URL": os.getenv("MINIO_ENDPOINT_URL"),
     }
 }
 
