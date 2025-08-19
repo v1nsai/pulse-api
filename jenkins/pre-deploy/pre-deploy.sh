@@ -17,6 +17,7 @@ kubectl create secret docker-registry harbor-registry-secret \
   --namespace pulse
 
 # generate django secret key
+export DJANGO_SECRET_KEY=$(openssl rand -base64 64)
 kubectl create secret generic django-secret \
-  --from-literal=DJANGO_SECRET_KEY=$(openssl rand -base64 64) \
+  --from-literal=DJANGO_SECRET_KEY="${DJANGO_SECRET_KEY}" \
   --namespace pulse
