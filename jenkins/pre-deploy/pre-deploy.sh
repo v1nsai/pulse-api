@@ -15,3 +15,8 @@ kubectl create secret docker-registry harbor-registry-secret \
   --docker-password=${HARBOR_PASSWORD} \
   --docker-email=${HARBOR_EMAIL} \
   --namespace pulse
+
+# generate django secret key
+kubectl create secret generic django-secret \
+  --from-literal=DJANGO_SECRET_KEY=$(openssl rand -base64 64) \
+  --namespace pulse

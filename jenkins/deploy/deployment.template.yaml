@@ -32,3 +32,8 @@ spec:
             value: mysql.pulse.svc.cluster.local
           - name: DB_PORT
             value: "3306"
+          - name: DJANGO_SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: django-secret
+                key: DJANGO_SECRET_KEY

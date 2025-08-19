@@ -15,6 +15,7 @@ services:
       - jenkins/mysql/.env
     environment:
       - DB_HOST=mysql
+      - DJANGO_SECRET_KEY="blahblahblahsecretkey"
     depends_on:
       - mysql
   mysql:
