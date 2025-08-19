@@ -9,7 +9,7 @@ if [ -z "$DJANGO_SECRET_KEY" ] || [ -z "$DB_NAME" ] || [ -z "$DB_HOST" ] || [ -z
 fi
 
 # create db and initial schema
-mysql --execute "CREATE DATABASE IF NOT EXISTS $DB_NAME;" \
+mysql --execute "CREATE DATABASE IF NOT EXISTS pulse;" \
     --host "$DB_HOST" \
     --user "$DB_USER" \
     --password="$DB_PASS" \
