@@ -2,6 +2,12 @@
 
 set -e
 
+# check env
+if [ -z "$DJANGO_SECRET_KEY" ] || [ -z "$DB_NAME" ] || [ -z "$DB_HOST" ] || [ -z "$DB_USER" ] || [ -z "$DB_PASS" ] || [ -z "$ENVIRONMENT" ]; then
+  echo "Missing required environment variables."
+  exit 1
+fi
+
 # create db and initial schema
 mysql --execute "CREATE DATABASE IF NOT EXISTS $DB_NAME;" \
     --host "$DB_HOST" \
@@ -11,4 +17,8 @@ mysql --execute "CREATE DATABASE IF NOT EXISTS $DB_NAME;" \
 pipenv run python manage.py migrate
 
 # run django server
-pipenv run gunicorn pulse_api.wsgi:application --bind 0.0.0.0:8000
+if [ "$ENVIRONMENT" = "production" ]; then
+  pipenv run gunicorn pulse_api.wsgi:application --bind 0.0.0.0:8000
+else
+  pipenv run python manage.py runserver 0.0.0.0:8000
+fi

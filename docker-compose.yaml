@@ -16,6 +16,7 @@ services:
     environment:
       - DB_HOST=mysql
       - DJANGO_SECRET_KEY="blahblahblahsecretkey"
+      - ENVIRONMENT=local
     depends_on:
       - mysql
   mysql:

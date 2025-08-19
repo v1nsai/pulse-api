@@ -17,6 +17,12 @@ pipeline {
           image: gcr.io/kaniko-project/executor:v1.23.2-debug
           command: ["/busybox/sh","-c","while true; do sleep 3600; done"]
           tty: true
+          env:
+            - name: DJANGO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: django-secret
+                  key: DJANGO_SECRET_KEY
           securityContext:
             runAsUser: 0
             allowPrivilegeEscalation: true

@@ -37,3 +37,5 @@ spec:
               secretKeyRef:
                 name: django-secret
                 key: DJANGO_SECRET_KEY
+          - name: ENVIRONMENT
+            value: production

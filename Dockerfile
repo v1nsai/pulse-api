@@ -2,7 +2,8 @@ FROM python:3.13-slim
 
 ENV DEBIAN_FRONTEND=noninteractive \
     PIP_NO_CACHE_DIR=1 \
-    PYTHONUNBUFFERED=1
+    PYTHONUNBUFFERED=1 \
+    DJANGO_SECRET_KEY=
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
       build-essential \
