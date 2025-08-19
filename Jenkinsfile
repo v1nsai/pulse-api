@@ -65,7 +65,7 @@ pipeline {
       steps {
         container('git') {
           checkout scm
-          sh 'git --version && echo WORKSPACE=$WORKSPACE && test -f Dockerfile && ls -la'  // quick sanity
+          sh 'git --version && echo WORKSPACE=$WORKSPACE && test -f Dockerfile && ls -la'
         }
       }
     }

@@ -9,6 +9,7 @@ djangorestframework = "*"
 mysqlclient = "*"
 boto3 = "*"
 django-storages = "*"
+gunicorn = "*"
 
 [dev-packages]
 

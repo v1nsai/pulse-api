@@ -7,8 +7,8 @@ mysql --execute "CREATE DATABASE IF NOT EXISTS $DB_NAME;" \
     --host "$DB_HOST" \
     --user "$DB_USER" \
     --password="$DB_PASS" \
-    --ssl=false
+    --ssl=false # TODO: set up certs
 pipenv run python manage.py migrate
 
 # run django server
-pipenv run python manage.py runserver 0.0.0.0:8000
+pipenv run gunicorn pulse_api.wsgi:application --bind 0.0.0.0:8000

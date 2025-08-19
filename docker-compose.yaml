@@ -2,7 +2,9 @@ version: '3.8'
 
 services:
   pulse_api:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.local
     image: pulse_api:latest
     container_name: pulse_api
     ports:
