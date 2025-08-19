@@ -4,6 +4,7 @@ pipeline {
       yaml '''
       apiVersion: v1
       kind: Pod
+      namespace: pulse
       metadata:
         labels:
           app: jenkins-kaniko
