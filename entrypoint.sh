@@ -14,6 +14,9 @@ mysql --execute "CREATE DATABASE IF NOT EXISTS pulse;" \
     --user "$DB_USER" \
     --password="$DB_PASS" \
     --ssl=false # TODO: set up certs
+
+# generate and run migrations
+pipenv run python manage.py makemigrations
 pipenv run python manage.py migrate
 
 # run django server
