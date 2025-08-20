@@ -5,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.local
+      args:
+        DJANGO_SECRET_KEY: "blahblahblahsecretkey"
     image: pulse_api:latest
     container_name: pulse_api
     ports:
@@ -12,7 +14,7 @@ services:
     volumes:
       - .:/app
     env_file:
-      - jenkins/mysql/.env
+      - jenkins/mysql/.env # defines DB_NAME, DB_USER, DB_PASS, DB_HOST, DB_PORT, MYSQL_ROOT_PASSWORD
     environment:
       - DB_HOST=mysql
       - DJANGO_SECRET_KEY="blahblahblahsecretkey"

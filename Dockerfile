@@ -1,9 +1,13 @@
 FROM python:3.13-slim
 
+ARG DJANGO_SECRET_KEY
+
 ENV DEBIAN_FRONTEND=noninteractive \
     PIP_NO_CACHE_DIR=1 \
     PYTHONUNBUFFERED=1 \
-    DJANGO_SECRET_KEY=
+    DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+
+RUN echo "DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
       build-essential \
@@ -32,7 +36,7 @@ RUN python -m pip install --upgrade pip && \
     python -m pip install pipenv --user && \
     pipenv install --deploy --ignore-pipfile
 
-RUN pipenv run python manage.py collectstatic --noinput
+RUN DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY} pipenv run python manage.py collectstatic --noinput
 
 EXPOSE 8000
 

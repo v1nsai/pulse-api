@@ -89,6 +89,7 @@ pipeline {
               --dockerfile ${WORKSPACE}/Dockerfile \
               --destination ${REGISTRY}/${PROJECT}/${IMAGE_NAME}:${TAG} \
               --destination ${REGISTRY}/${PROJECT}/${IMAGE_NAME}:latest-${BRANCH_NAME} \
+              --build-arg DJANGO_SECRET_KEY=${env.DJANGO_SECRET_KEY} \
               ${KANIKO_TLS}
           """
         }
