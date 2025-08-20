@@ -4,7 +4,6 @@ services:
   pulse_api:
     build:
       context: .
-      dockerfile: Dockerfile.local
       args:
         DJANGO_SECRET_KEY: "blahblahblahsecretkey"
     image: pulse_api:latest

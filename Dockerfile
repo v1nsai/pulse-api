@@ -4,9 +4,7 @@ ARG DJANGO_SECRET_KEY
 
 ENV DEBIAN_FRONTEND=noninteractive \
     PIP_NO_CACHE_DIR=1 \
-    PYTHONUNBUFFERED=1 \
-    DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
-
+    PYTHONUNBUFFERED=1
 RUN echo "DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
