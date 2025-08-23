@@ -1,11 +1,11 @@
 #!/bin/bash
 
 set -e
-source jenkins/.env
+source deployment/.env
 
 # Create namespace and service account for jenkins to use
-kubectl apply -f ./jenkins/pre-deploy/namespace.yaml 
-kubectl apply -f ./jenkins/pre-deploy/serviceaccount.yaml
+kubectl apply -f ./deployment/pre-deploy/namespace.yaml 
+kubectl apply -f ./deployment/pre-deploy/serviceaccount.yaml
 
 # Harbor registry URL and secret
 kubectl delete secret harbor-registry-secret --namespace pulse || true

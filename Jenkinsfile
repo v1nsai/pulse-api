@@ -107,8 +107,8 @@ pipeline {
         container('kubectl') {
           sh '''
             set -eu pipefail
-            sed "s|REPLACE_IMAGE|${FULL_IMG}|g" jenkins/deploy/deployment.template.yaml > jenkins/deploy/deployment.yaml
-            kubectl apply -k ./jenkins/deploy
+            sed "s|REPLACE_IMAGE|${FULL_IMG}|g" deployment/deploy/deployment.template.yaml > deployment/deploy/deployment.yaml
+            kubectl apply -k ./deployment/deploy
             kubectl -n ${NAMESPACE} rollout status deploy/${DEPLOY} --timeout=5m
             kubectl -n ${NAMESPACE} get deploy ${DEPLOY} -o wide
           '''
