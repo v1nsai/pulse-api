@@ -3,7 +3,7 @@
 set -e
 
 # check env
-if [ -z "$DJANGO_SECRET_KEY" ] || [ -z "$DB_NAME" ] || [ -z "$DB_HOST" ] || [ -z "$DB_USER" ] || [ -z "$DB_PASS" ] || [ -z "$ENVIRONMENT" ]; then
+if [ -z "$DJANGO_SECRET_KEY" ] || [ -z "$DB_HOST" ] || [ -z "$DB_USER" ] || [ -z "$DB_PASS" ] || [ -z "$ENVIRONMENT" ]; then
   echo "Missing required environment variables."
   exit 1
 fi
