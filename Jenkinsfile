@@ -17,12 +17,6 @@ pipeline {
           image: gcr.io/kaniko-project/executor:v1.23.2-debug
           command: ["/busybox/sh","-c","while true; do sleep 3600; done"]
           tty: true
-          env:
-            - name: DJANGO_SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: django-secret
-                  key: DJANGO_SECRET_KEY
           securityContext:
             runAsUser: 0
             allowPrivilegeEscalation: true
@@ -89,7 +83,6 @@ pipeline {
               --dockerfile ${WORKSPACE}/Dockerfile \
               --destination ${REGISTRY}/${PROJECT}/${IMAGE_NAME}:${TAG} \
               --destination ${REGISTRY}/${PROJECT}/${IMAGE_NAME}:latest-${BRANCH_NAME} \
-              --build-arg DJANGO_SECRET_KEY=${env.DJANGO_SECRET_KEY} \
               ${KANIKO_TLS}
           """
         }
