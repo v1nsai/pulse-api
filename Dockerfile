@@ -20,6 +20,10 @@ WORKDIR /app
 
 COPY . /app
 
+# handle entrypoint script to ensure it gets picked up on every rebuild
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
 RUN chown -R django:django /app
 
 USER django
@@ -33,5 +37,5 @@ RUN python -m pip install --upgrade pip && \
 
 EXPOSE 8000
 
-# CMD ["/app/entrypoint.sh"]
-CMD ["sleep", "infinity"]
+CMD ["/app/entrypoint.sh"]
+# CMD ["sleep", "infinity"]
