@@ -9,23 +9,22 @@ if [ -z "$DJANGO_SECRET_KEY" ] || [ -z "$DB_HOST" ] || [ -z "$DB_USER" ] || [ -z
 fi
 
 # create db and initial schema
-echo "test1"
+echo "Creating database if it doesn't already exist..."
 mysql --execute "CREATE DATABASE IF NOT EXISTS pulse;" \
     --host "$DB_HOST" \
     --user "$DB_USER" \
     --password="$DB_PASS" \
     --ssl=false # TODO: set up certs
 
-# generate and run migrations
-echo "test2"
+echo "Generating and running migrations..."
 pipenv run python manage.py makemigrations
 pipenv run python manage.py migrate
 
 # run django server
 if [ "$ENVIRONMENT" = "production" ]; then
-  echo "test3"
-  pipenv run gunicorn pulse.wsgi:application --bind 0.0.0.0:8000
+  echo "Starting Gunicorn server..."
+  pipenv run gunicorn pulse_api.wsgi:application --bind 0.0.0.0:8000
 else
-  echo "test4"
+  echo "Starting development server..."
   pipenv run python manage.py runserver 0.0.0.0:8000
 fi
