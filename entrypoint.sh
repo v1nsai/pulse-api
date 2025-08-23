@@ -24,7 +24,7 @@ pipenv run python manage.py migrate
 # run django server
 if [ "$ENVIRONMENT" = "production" ]; then
   echo "test3"
-  pipenv run gunicorn pulse_api.wsgi:application --bind 0.0.0.0:8000
+  pipenv run gunicorn pulse.wsgi:application --bind 0.0.0.0:8000
 else
   echo "test4"
   pipenv run python manage.py runserver 0.0.0.0:8000
