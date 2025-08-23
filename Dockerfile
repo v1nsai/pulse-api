@@ -31,8 +31,6 @@ RUN python -m pip install --upgrade pip && \
     python -m pip install pipenv --user && \
     pipenv install --deploy --ignore-pipfile
 
-RUN DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY} pipenv run python manage.py collectstatic --noinput
-
 EXPOSE 8000
 
 # CMD ["/app/entrypoint.sh"]
