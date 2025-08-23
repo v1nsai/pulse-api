@@ -38,4 +38,5 @@ RUN DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY} pipenv run python manage.py collectst
 
 EXPOSE 8000
 
-CMD ["/app/entrypoint.sh"]
+# CMD ["/app/entrypoint.sh"]
+CMD ["sleep", "infinity"]

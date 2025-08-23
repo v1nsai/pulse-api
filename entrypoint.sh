@@ -21,12 +21,10 @@ pipenv run python manage.py makemigrations
 pipenv run python manage.py migrate
 
 # run django server
-# if [ "$ENVIRONMENT" = "production" ]; then
-#   echo "Starting Gunicorn server..."
-#   pipenv run gunicorn pulse_api.wsgi:application --bind 0.0.0.0:8000
-# else
-#   echo "Starting development server..."
-#   pipenv run python manage.py runserver 0.0.0.0:8000
-# fi
-
-sleep infinity
+if [ "$ENVIRONMENT" = "production" ]; then
+  echo "Starting Gunicorn server..."
+  pipenv run gunicorn pulse_api.wsgi:application --bind 0.0.0.0:8000
+else
+  echo "Starting development server..."
+  pipenv run python manage.py runserver 0.0.0.0:8000
+fi
