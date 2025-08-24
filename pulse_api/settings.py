@@ -81,7 +81,7 @@ WSGI_APPLICATION = "pulse_api.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "pulse_api",
+        "NAME": "pulse",
         "USER": os.getenv("DB_USER", "root"),
         "PASSWORD": os.getenv("DB_PASS", ""),
         "HOST": os.getenv("DB_HOST", "localhost"),
