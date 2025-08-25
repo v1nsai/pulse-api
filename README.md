@@ -9,6 +9,9 @@
 
 API backend for Pulse: Social Media for Humans
 
+## Data Model
+![data_model](https://github.com/v1nsai/pulse-api/blob/master/diagrams/data_model.svg)
+
 ## Deployment with Jenkins
 This project currently deploys to my self-hosted kubernetes cluster using pre-defined kubernetes resources found in the `deployment/` directory.  The `deployment/pre-deploy/pre-deploy.sh` script declares the namespace and serviceaccount used by jenkins to deploy the rest of the app after building.  It must be run once before building.
 
