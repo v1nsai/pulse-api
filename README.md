@@ -1,4 +1,12 @@
 # pulse-api
+
+![Django](https://img.shields.io/badge/Django-5.2.5-green)
+![Django REST Framework](https://img.shields.io/badge/DRF-3.16.1-red)
+![MySQL](https://img.shields.io/badge/MySQL-2.2.7-blue)
+![Gunicorn](https://img.shields.io/badge/Gunicorn-23.0.0-brightgreen)
+![Boto3](https://img.shields.io/badge/Boto3-1.40.13-yellow)
+![Pillow](https://img.shields.io/badge/Pillow-11.3.0-orange)
+
 API backend for Pulse: Social Media for Humans
 
 ## Deployment with Jenkins
